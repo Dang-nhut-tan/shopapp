@@ -1,0 +1,24 @@
+'use strict';
+
+const { Model } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+  class NewsDetail extends Model {
+    static associate(models) {
+      NewsDetail.belongsTo(models.Product, { foreignKey: 'product_id' });
+      NewsDetail.belongsTo(models.News, { foreignKey: 'news_id' });
+    }
+  }
+
+  NewsDetail.init({
+    product_id: DataTypes.INTEGER,
+    news_id: DataTypes.INTEGER,
+  }, {
+    sequelize,
+    modelName: 'NewsDetail',
+    tableName: 'news_details',
+    underscored: true,
+  });
+
+  return NewsDetail;
+};

@@ -1,0 +1,19 @@
+{
+  "name": "shopapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "db:setup": "node scripts/create-database.js && sequelize-cli db:migrate",
+    "db:create": "sequelize-cli db:create",
+    "db:create:safe": "node scripts/create-database.js",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:undo": "sequelize-cli db:migrate:undo"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mysql2": "^3.22.5",
+    "sequelize": "^6.37.8",
+    "sequelize-cli": "^6.6.5"
+  }
+}
