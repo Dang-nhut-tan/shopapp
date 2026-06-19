@@ -4,16 +4,25 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "nodemon --inspect index.js",
+    "test": "jest",
     "db:setup": "node scripts/create-database.js && sequelize-cli db:migrate",
     "db:create": "sequelize-cli db:create",
     "db:create:safe": "node scripts/create-database.js",
     "db:migrate": "sequelize-cli db:migrate",
-    "db:undo": "sequelize-cli db:migrate:undo"
+    "db:undo": "sequelize-cli db:migrate:undo",
+    "db:drop": "npx sequelize-cli db:drop"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "joi": "^18.2.3",
     "mysql2": "^3.22.5",
+    "nodemon": "^3.1.14",
     "sequelize": "^6.37.8",
     "sequelize-cli": "^6.6.5"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
   }
 }

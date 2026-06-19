@@ -1,6 +1,9 @@
 const path = require('path');
 
+// File này nói cho sequelize-cli biết project đang đặt config, models,
+// migrations và seeders ở thư mục nào.
 module.exports = {
+  // Dùng config.js thay vì config.json để đọc được biến môi trường từ .env.
   config: path.resolve('config', 'config.js'),
   'models-path': path.resolve('models'),
   'migrations-path': path.resolve('migrations'),

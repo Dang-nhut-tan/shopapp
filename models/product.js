@@ -5,8 +5,10 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
+      // Một sản phẩm thuộc một thương hiệu và một danh mục.
       Product.belongsTo(models.Brand, { foreignKey: 'brand_id' });
       Product.belongsTo(models.Category, { foreignKey: 'category_id' });
+      // Một sản phẩm có thể xuất hiện ở nhiều bảng con khác nhau.
       Product.hasMany(models.Feedback, { foreignKey: 'product_id' });
       Product.hasMany(models.OrderDetail, { foreignKey: 'product_id' });
       Product.hasMany(models.NewsDetail, { foreignKey: 'product_id' });
@@ -14,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
+  // Các field ở đây khớp với bảng products trong migration.
   Product.init({
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
@@ -28,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Product',
-    tableName: 'products',
+    tableName: 'product',
+    // Khi underscored là true, Sequelize map createdAt -> created_at.
     underscored: true,
   });
 

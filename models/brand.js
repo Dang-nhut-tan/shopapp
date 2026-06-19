@@ -10,13 +10,15 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Brand.init({
-    name: DataTypes.STRING,
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
     image: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'Brand',
-    tableName: 'brands',
-    timestamps: false,
+    tableName: 'brand',
+    // underscored true giúp Sequelize dùng tên cột dạng snake_case.
+    // Ví dụ: createdAt -> created_at, updatedAt -> updated_at.
+    underscored: true,
   });
 
   return Brand;
