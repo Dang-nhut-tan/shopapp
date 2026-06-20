@@ -16,7 +16,6 @@ email:string,password:string,name:string,role:integer,avatar:string,phone:intege
 import express from 'express'
 import dotenv from 'dotenv'
 import { AppRoute } from './appRoutes.js';
-
 dotenv.config();
 
 
