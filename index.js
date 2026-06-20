@@ -32,9 +32,9 @@ app.get('/',(req,res)=>{
 // nếu ko có env mặc định lấy port 3000
 const port=process?.env?.PORT?? 3000;
 
-app.listen(process.env.PORT,()=>
+app.listen(port,()=>
   {
-    console.log("Đang lắng nghe ở ",process.env.PORT);
+    console.log("Đang lắng nghe ở ",port);
   })
 
 

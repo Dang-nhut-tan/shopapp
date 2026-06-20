@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon --inspect index.js",
     "test": "jest",
+    "test:newman": "newman run tests/newman/shopapp-smoke.postman_collection.json",
     "db:setup": "node scripts/create-database.js && sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "db:create": "sequelize-cli db:create",
     "db:create:safe": "node scripts/create-database.js",
@@ -26,6 +27,8 @@
   },
   "devDependencies": {
     "jest": "^30.4.2",
+    "newman": "^6.2.2",
+    "newman-reporter-htmlextra": "^1.23.1",
     "sqlite3": "^6.0.1"
   }
 }

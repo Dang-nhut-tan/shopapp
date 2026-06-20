@@ -22,7 +22,12 @@ export function AppRoute(app) {
     validate(InsertPorductReq),
     asyncHandler(ProductController.insertProducts),
   );
-  router.delete("/products/:id", ProductController.deleteProducts);
+  router.put(
+    "/products/:id",
+    validate(InsertPorductReq),
+    asyncHandler(ProductController.updateProducts),
+  );
+  router.delete("/products/:id", asyncHandler(ProductController.deleteProducts));
 
   router.get("/orders", OrderController.getOrders);
   router.get("/orders/:id", OrderController.getOrdersBYID);
@@ -31,7 +36,12 @@ export function AppRoute(app) {
     validate(InsertOrderReq),
     asyncHandler(OrderController.insertOrders),
   );
-  router.delete("/orders/:id", OrderController.deleteOrders);
+  router.put(
+    "/orders/:id",
+    validate(InsertOrderReq),
+    asyncHandler(OrderController.updateOrders),
+  );
+  router.delete("/orders/:id", asyncHandler(OrderController.deleteOrders));
 
   router.get("/categories", CategoryController.getCategories);
   router.get("/categories/:id", CategoryController.getCategoriesBYID);

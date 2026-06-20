@@ -2,8 +2,8 @@
 
 const now = new Date();
 const userIds = [101, 102];
-const categoryIds = [101, 102, 103];
-const brandIds = [101, 102, 103];
+const categoryIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
+const brandIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
 const productIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
 const orderIds = [101];
 const orderDetailIds = [101];
@@ -47,6 +47,13 @@ module.exports = {
       { id: 101, name: 'Điện thoại mẫu', image: '', created_at: now, updated_at: now },
       { id: 102, name: 'Laptop mẫu', image: '', created_at: now, updated_at: now },
       { id: 103, name: 'Phụ kiện mẫu', image: '', created_at: now, updated_at: now },
+      { id: 104, name: 'Máy tính bảng mẫu', image: '', created_at: now, updated_at: now },
+      { id: 105, name: 'Đồng hồ thông minh mẫu', image: '', created_at: now, updated_at: now },
+      { id: 106, name: 'Tai nghe mẫu', image: '', created_at: now, updated_at: now },
+      { id: 107, name: 'Màn hình mẫu', image: '', created_at: now, updated_at: now },
+      { id: 108, name: 'Bàn phím mẫu', image: '', created_at: now, updated_at: now },
+      { id: 109, name: 'Chuột máy tính mẫu', image: '', created_at: now, updated_at: now },
+      { id: 110, name: 'Thiết bị mạng mẫu', image: '', created_at: now, updated_at: now },
     ], {
       updateOnDuplicate: ['name', 'image', 'updated_at'],
     });
@@ -55,6 +62,13 @@ module.exports = {
       { id: 101, name: 'Samsung mẫu', image: '', created_at: now, updated_at: now },
       { id: 102, name: 'Apple mẫu', image: '', created_at: now, updated_at: now },
       { id: 103, name: 'Xiaomi mẫu', image: '', created_at: now, updated_at: now },
+      { id: 104, name: 'Oppo mẫu', image: '', created_at: now, updated_at: now },
+      { id: 105, name: 'Sony mẫu', image: '', created_at: now, updated_at: now },
+      { id: 106, name: 'Dell mẫu', image: '', created_at: now, updated_at: now },
+      { id: 107, name: 'HP mẫu', image: '', created_at: now, updated_at: now },
+      { id: 108, name: 'Lenovo mẫu', image: '', created_at: now, updated_at: now },
+      { id: 109, name: 'Asus mẫu', image: '', created_at: now, updated_at: now },
+      { id: 110, name: 'Acer mẫu', image: '', created_at: now, updated_at: now },
     ], {
       updateOnDuplicate: ['name', 'image', 'updated_at'],
     });

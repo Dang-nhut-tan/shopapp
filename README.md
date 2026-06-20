@@ -30,6 +30,20 @@ yarn db:seed
 yarn db:seed:undo
 ```
 
+## Newman test
+
+Run the app first:
+
+```bash
+yarn start
+```
+
+Then open another terminal and run:
+
+```bash
+yarn test:newman
+```
+
 ## Luồng chạy
 
 1. `.env` chứa thông tin kết nối MySQL của từng máy.
