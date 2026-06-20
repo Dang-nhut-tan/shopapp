@@ -18,8 +18,9 @@ const baseConfig = {
 module.exports = {
   development: baseConfig,
   test: {
-    ...baseConfig,
-    database: process.env.DB_TEST_NAME || 'shopapp_test',
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false,
   },
   production: {
     ...baseConfig,

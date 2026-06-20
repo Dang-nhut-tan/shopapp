@@ -1,38 +1,18 @@
-function createMockResponse()
-{
-    return {
-        statusCode: null,
-        body: null,
-        status(code)
-        {
-            this.statusCode = code
-            return this
-        },
-        json(data)
-        {
-            this.body = data
-            return this
-        }
-    }
-}
+const { createMockResponse, useTestDatabase } = require('./testBase.js');
 
-describe('testBase', () =>
-{
-    test('co the gia lap response json', () =>
-    {
-        const res = createMockResponse()
+useTestDatabase();
 
-        res.status(200).json({
-            message: 'Unit test hoạt động'
-        })
+describe('testBase', () => {
+  test('có thể giả lập response json', () => {
+    const res = createMockResponse();
 
-        expect(res.statusCode).toBe(200)
-        expect(res.body).toEqual({
-            message: 'Unit test hoạt động'
-        })
-    })
-})
+    res.status(200).json({
+      message: 'Unit test hoạt động',
+    });
 
-module.exports = {
-    createMockResponse
-}
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      message: 'Unit test hoạt động',
+    });
+  });
+});
