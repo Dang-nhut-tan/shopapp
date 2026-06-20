@@ -20,16 +20,7 @@ export async function getOrdersBYID(req,res)
 export async function insertOrders(req,res)
 {
     try {
-        const { error, value } = InsertOrderReq.validate(req.body)
-
-        if (error) {
-            return res.status(400).json({
-                message:"Dữ liệu đơn hàng không hợp lệ",
-                error:error.details
-            });
-        }
-
-        const orderData = new InsertOrderReq(value)
+        const orderData = new InsertOrderReq(req.body)
         const Order=await db.Order.create(orderData)
 
         res.status(201).json({

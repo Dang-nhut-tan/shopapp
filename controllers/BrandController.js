@@ -20,16 +20,7 @@ export async function getBrandsBYID(req,res)
 export async function insertBrands(req,res)
 {
     try {
-        const { error, value } = InsertBrandReq.validate(req.body)
-
-        if (error) {
-            return res.status(400).json({
-                message:"Dữ liệu thương hiệu không hợp lệ",
-                error:error.details
-            });
-        }
-
-        const brandData = new InsertBrandReq(value)
+        const brandData = new InsertBrandReq(req.body)
         const existingBrand = await db.Brand.findOne({
             where: {
                 name: brandData.name

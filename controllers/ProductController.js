@@ -20,16 +20,7 @@ export async function getProductsBYID(req,res)
 export async function insertProducts(req,res)
 {
     try {
-        const { error, value } = InsertPorductReq.validate(req.body) //truy xuất đối tượng bên trong của đối tượng
-
-        if (error) {
-            return res.status(400).json({
-                message:"Dữ liệu sản phẩm không hợp lệ",
-                error:error.details//nhả ra chi tiết lỗi
-            });
-        }
-
-        const productData = new InsertPorductReq(value)
+        const productData = new InsertPorductReq(req.body)
         const existingProduct = await db.Product.findOne({
             where: {
                 name: productData.name

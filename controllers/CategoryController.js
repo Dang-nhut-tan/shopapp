@@ -20,16 +20,7 @@ export async function getCategoriesBYID(req,res)
 export async function insertCategories(req,res)
 {
     try {
-        const { error, value } = InsertCategoryReq.validate(req.body)
-
-        if (error) {
-            return res.status(400).json({
-                message:"Dữ liệu danh mục không hợp lệ",
-                error:error.details
-            });
-        }
-
-        const categoryData = new InsertCategoryReq(value)
+        const categoryData = new InsertCategoryReq(req.body)
         const existingCategory = await db.Category.findOne({
             where: {
                 name: categoryData.name

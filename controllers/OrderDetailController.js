@@ -20,16 +20,7 @@ export async function getOrderDetailsBYID(req,res)
 export async function insertOrderDetails(req,res)
 {
     try {
-        const { error, value } = InsertOrderDetailReq.validate(req.body)
-
-        if (error) {
-            return res.status(400).json({
-                message:"Dữ liệu chi tiết đơn hàng không hợp lệ",
-                error:error.details
-            });
-        }
-
-        const orderDetailData = new InsertOrderDetailReq(value)
+        const orderDetailData = new InsertOrderDetailReq(req.body)
         const OrderDetail=await db.OrderDetail.create(orderDetailData)
 
         res.status(201).json({
