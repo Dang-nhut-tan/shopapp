@@ -34,6 +34,36 @@
           }
         }
       ]
+    },
+    {
+      "name": "GET /api/users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/users?page=1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('body has users array', function () {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('message');",
+              "  pm.expect(json).to.have.property('data');",
+              "  pm.expect(json).to.have.property('currentPage');",
+              "  pm.expect(json).to.have.property('totalPage');",
+              "  pm.expect(json.data).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
     }
   ]
 }

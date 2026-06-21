@@ -3,21 +3,29 @@ const { getProductPagination, getTotalPage } = require('../utils/productPaginati
 
 useTestDatabase();
 
-async function seedProductsForPagination() {
+async function seedProductData(total = 10) {
   const now = new Date();
 
-  await db.Category.bulkCreate([
-    { id: 1, name: 'Điện thoại', image: '', created_at: now, updated_at: now },
-  ]);
+  await db.Category.create({
+    id: 1,
+    name: 'Điện thoại',
+    image: '',
+    created_at: now,
+    updated_at: now,
+  });
 
-  await db.Brand.bulkCreate([
-    { id: 1, name: 'Samsung', image: '', created_at: now, updated_at: now },
-  ]);
+  await db.Brand.create({
+    id: 1,
+    name: 'Samsung',
+    image: '',
+    created_at: now,
+    updated_at: now,
+  });
 
-  const products = Array.from({ length: 10 }, (_, index) => {
-    const id = index + 1;
+  const products = [];
 
-    return {
+  for (let id = 1; id <= total; id += 1) {
+    products.push({
       id,
       name: `Sản phẩm mẫu ${id}`,
       price: 1000000 + id,
@@ -31,17 +39,26 @@ async function seedProductsForPagination() {
       category_id: 1,
       created_at: now,
       updated_at: now,
-    };
-  });
+    });
+  }
 
   await db.Product.bulkCreate(products);
 }
 
+async function getProductPage(page) {
+  const pagination = getProductPagination({ page });
+  const products = await db.Product.findAll({
+    limit: pagination.pageSize,
+    offset: pagination.offset,
+    order: [['id', 'ASC']],
+  });
+
+  return { products, pagination };
+}
+
 describe('phân trang sản phẩm', () => {
   test('page=2 thì pageSize=5 và offset=5', () => {
-    const result = getProductPagination({ page: '2' });
-
-    expect(result).toEqual({
+    expect(getProductPagination({ page: '2' })).toEqual({
       currentPage: 2,
       pageSize: 5,
       offset: 5,
@@ -53,29 +70,22 @@ describe('phân trang sản phẩm', () => {
   });
 
   test('page không hợp lệ thì mặc định về trang 1', () => {
-    const result = getProductPagination({ page: '-1' });
-
-    expect(result.currentPage).toBe(1);
-    expect(result.offset).toBe(0);
+    expect(getProductPagination({ page: '-1' })).toMatchObject({
+      currentPage: 1,
+      offset: 0,
+    });
   });
 
   test('lấy trang 2 từ database test SQLite', async () => {
-    await seedProductsForPagination();
+    await seedProductData(10);
 
-    const { currentPage, pageSize, offset } = getProductPagination({ page: '2' });
-    const [products, totalProducts] = await Promise.all([
-      db.Product.findAll({
-        limit: pageSize,
-        offset,
-        order: [['id', 'ASC']],
-      }),
-      db.Product.count(),
-    ]);
+    const totalProducts = await db.Product.count();
+    const { products, pagination } = await getProductPage('2');
 
-    expect(currentPage).toBe(2);
+    expect(pagination.currentPage).toBe(2);
     expect(products).toHaveLength(5);
     expect(products[0].id).toBe(6);
     expect(totalProducts).toBe(10);
-    expect(getTotalPage(totalProducts, pageSize)).toBe(2);
+    expect(getTotalPage(totalProducts, pagination.pageSize)).toBe(2);
   });
 });

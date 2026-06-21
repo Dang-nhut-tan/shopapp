@@ -8,57 +8,50 @@ import UpdateProductReq from "../dtos/request/product/updateProductReq.js";
 const { getProductPagination, getTotalPage } = productPagination;
 
 export async function getProducts(req, res) {
-  try {
-    const { search = "", page = 1 } = req.query;
-    const { currentPage, pageSize, offset } = getProductPagination({ page });
+  const { search = "", page = 1 } = req.query;
+  const { currentPage, pageSize, offset } = getProductPagination({ page });
 
-    let whereClause = {};
+  let whereClause = {};
 
-    if (search.trim() !== "") {
-      whereClause = {
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${search}%`,
-            },
+  if (search.trim() !== "") {
+    whereClause = {
+      [Op.or]: [
+        {
+          name: {
+            [Op.like]: `%${search}%`,
           },
-          {
-            description: {
-              [Op.like]: `%${search}%`,
-            },
+        },
+        {
+          description: {
+            [Op.like]: `%${search}%`,
           },
-          {
-            specification: {
-              [Op.like]: `%${search}%`,
-            },
+        },
+        {
+          specification: {
+            [Op.like]: `%${search}%`,
           },
-        ],
-      };
-    }
-
-    const [products, totalProducts] = await Promise.all([
-      db.Product.findAll({
-        where: whereClause,
-        limit: pageSize,
-        offset,
-      }),
-      db.Product.count({
-        where: whereClause,
-      }),
-    ]);
-
-    res.status(200).json({
-      message: "Lấy danh sách sản phẩm thành công",
-      currentPage,
-      totalPage: getTotalPage(totalProducts, pageSize),
-      data: products,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Lỗi khi lấy danh sách sản phẩm",
-      error: error.message,
-    });
+        },
+      ],
+    };
   }
+
+  const [products, totalProducts] = await Promise.all([
+    db.Product.findAll({
+      where: whereClause,
+      limit: pageSize,
+      offset,
+    }),
+    db.Product.count({
+      where: whereClause,
+    }),
+  ]);
+
+  res.status(200).json({
+    message: "Lấy danh sách sản phẩm thành công",
+    currentPage,
+    totalPage: getTotalPage(totalProducts, pageSize),
+    data: products,
+  });
 }
 
 export async function getProductsBYID(req, res) {
@@ -78,32 +71,25 @@ export async function getProductsBYID(req, res) {
 }
 
 export async function insertProducts(req, res) {
-  try {
-    const productData = new InsertPorductReq(req.body);
-    const existingProduct = await db.Product.findOne({
-      where: {
-        name: productData.name,
-      },
-    });
+  const productData = new InsertPorductReq(req.body);
+  const existingProduct = await db.Product.findOne({
+    where: {
+      name: productData.name,
+    },
+  });
 
-    if (existingProduct) {
-      return res.status(409).json({
-        message: "Tên sản phẩm đã tồn tại",
-      });
-    }
-
-    const product = await db.Product.create(productData);
-
-    res.status(201).json({
-      message: "Thêm sản phẩm thành công",
-      data: product,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi khi thêm mới sản phẩm",
-      error: error.message,
+  if (existingProduct) {
+    return res.status(409).json({
+      message: "Tên sản phẩm đã tồn tại",
     });
   }
+
+  const product = await db.Product.create(productData);
+
+  res.status(201).json({
+    message: "Thêm sản phẩm thành công",
+    data: product,
+  });
 }
 
 export async function updateProducts(req, res) {

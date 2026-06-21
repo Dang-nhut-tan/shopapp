@@ -8,43 +8,36 @@ import UpdateBrandReq from "../dtos/request/brand/updateBrandReq.js";
 const { getProductPagination, getTotalPage } = pagination;
 
 export async function getBrands(req, res) {
-  try {
-    const { search = "", page = 1 } = req.query;
-    const { currentPage, pageSize, offset } = getProductPagination({ page });
+  const { search = "", page = 1 } = req.query;
+  const { currentPage, pageSize, offset } = getProductPagination({ page });
 
-    let whereClause = {};
+  let whereClause = {};
 
-    if (search.trim() !== "") {
-      whereClause = {
-        name: {
-          [Op.like]: `%${search}%`,
-        },
-      };
-    }
-
-    const [brands, totalBrands] = await Promise.all([
-      db.Brand.findAll({
-        where: whereClause,
-        limit: pageSize,
-        offset,
-      }),
-      db.Brand.count({
-        where: whereClause,
-      }),
-    ]);
-
-    res.status(200).json({
-      message: "Lấy danh sách thương hiệu thành công",
-      currentPage,
-      totalPage: getTotalPage(totalBrands, pageSize),
-      data: brands,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Lỗi khi lấy danh sách thương hiệu",
-      error: error.message,
-    });
+  if (search.trim() !== "") {
+    whereClause = {
+      name: {
+        [Op.like]: `%${search}%`,
+      },
+    };
   }
+
+  const [brands, totalBrands] = await Promise.all([
+    db.Brand.findAll({
+      where: whereClause,
+      limit: pageSize,
+      offset,
+    }),
+    db.Brand.count({
+      where: whereClause,
+    }),
+  ]);
+
+  res.status(200).json({
+    message: "Lấy danh sách thương hiệu thành công",
+    currentPage,
+    totalPage: getTotalPage(totalBrands, pageSize),
+    data: brands,
+  });
 }
 
 export async function getBrandsBYID(req, res) {
@@ -64,31 +57,24 @@ export async function getBrandsBYID(req, res) {
 }
 
 export async function insertBrands(req, res) {
-  try {
-    const brandData = new InsertBrandReq(req.body);
-    const existingBrand = await db.Brand.findOne({
-      where: {
-        name: brandData.name,
-      },
-    });
+  const brandData = new InsertBrandReq(req.body);
+  const existingBrand = await db.Brand.findOne({
+    where: {
+      name: brandData.name,
+    },
+  });
 
-    if (existingBrand) {
-      return res.status(409).json({
-        message: "Tên thương hiệu đã tồn tại",
-      });
-    }
-
-    const brand = await db.Brand.create(brandData);
-    res.status(201).json({
-      message: "Thêm thương hiệu thành công",
-      data: brand,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi khi thêm mới thương hiệu",
-      error: error.message,
+  if (existingBrand) {
+    return res.status(409).json({
+      message: "Tên thương hiệu đã tồn tại",
     });
   }
+
+  const brand = await db.Brand.create(brandData);
+  res.status(201).json({
+    message: "Thêm thương hiệu thành công",
+    data: brand,
+  });
 }
 
 export async function updateBrands(req, res) {

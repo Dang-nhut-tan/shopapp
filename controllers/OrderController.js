@@ -28,20 +28,13 @@ export async function getOrdersBYID(req, res) {
 }
 
 export async function insertOrders(req, res) {
-  try {
-    const orderData = new InsertOrderReq(req.body);
-    const order = await db.Order.create(orderData);
+  const orderData = new InsertOrderReq(req.body);
+  const order = await db.Order.create(orderData);
 
-    res.status(201).json({
-      message: "Thêm đơn hàng thành công",
-      data: order,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi khi thêm mới đơn hàng",
-      error: error.message,
-    });
-  }
+  res.status(201).json({
+    message: "Thêm đơn hàng thành công",
+    data: order,
+  });
 }
 
 export async function updateOrders(req, res) {

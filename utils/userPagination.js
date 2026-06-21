@@ -1,10 +1,10 @@
 const { createPagination, getTotalPage } = require('./pagination.js');
 
-function getProductPagination(query = {}) {
+function getUserPagination(query = {}) {
   return createPagination(query);
 }
 
 module.exports = {
-  getProductPagination,
+  getUserPagination,
   getTotalPage,
 };

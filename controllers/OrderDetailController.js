@@ -19,20 +19,13 @@ export async function getOrderDetailsBYID(req,res)
 
 export async function insertOrderDetails(req,res)
 {
-    try {
-        const orderDetailData = new InsertOrderDetailReq(req.body)
-        const OrderDetail=await db.OrderDetail.create(orderDetailData)
+    const orderDetailData = new InsertOrderDetailReq(req.body)
+    const OrderDetail=await db.OrderDetail.create(orderDetailData)
 
-        res.status(201).json({
-            message:"Thêm chi tiết đơn hàng thành công ",
-            data: OrderDetail
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message:"Lỗi khi thêm mới chi tiết đơn hàng",
-            error:error.message
-        });
-    }
+    res.status(201).json({
+        message:"Thêm chi tiết đơn hàng thành công ",
+        data: OrderDetail
+    });
 }
 
 export async function deleteOrderDetails(req,res)
