@@ -1,5 +1,6 @@
 import db from "../models/index.js";
-import InsertOrderReq from "../dtos/request/insertOrderReq.js";
+import InsertOrderReq from "../dtos/request/order/insertOrderReq.js";
+import UpdateOrderReq from "../dtos/request/order/updateOrderReq.js";
 
 export async function getOrders(req, res) {
   const orders = await db.Order.findAll();
@@ -53,7 +54,7 @@ export async function updateOrders(req, res) {
     });
   }
 
-  const orderData = new InsertOrderReq(req.body);
+  const orderData = new UpdateOrderReq(req.body);
   await order.update(orderData);
 
   res.status(200).json({

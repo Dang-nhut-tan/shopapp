@@ -2,7 +2,8 @@ import db from "../models/index.js";
 const { Op } = db.Sequelize;
 import pagination from "../utils/productPagination.js";
 
-import InsertBrandReq from "../dtos/request/insertBrandReq.js";
+import InsertBrandReq from "../dtos/request/brand/insertBrandReq.js";
+import UpdateBrandReq from "../dtos/request/brand/updateBrandReq.js";
 
 const { getProductPagination, getTotalPage } = pagination;
 
@@ -90,7 +91,55 @@ export async function insertBrands(req, res) {
   }
 }
 
+export async function updateBrands(req, res) {
+  const { id } = req.params;
+  const brand = await db.Brand.findByPk(id);
+
+  if (!brand) {
+    return res.status(404).json({
+      message: "KhÃ´ng tÃ¬m tháº¥y thÆ°Æ¡ng hiá»‡u",
+    });
+  }
+
+  const brandData = new UpdateBrandReq(req.body);
+
+  if (brandData.name) {
+    const existingBrand = await db.Brand.findOne({
+      where: {
+        name: brandData.name,
+        id: {
+          [Op.ne]: id,
+        },
+      },
+    });
+
+    if (existingBrand) {
+      return res.status(409).json({
+        message: "TÃªn thÆ°Æ¡ng hiá»‡u Ä‘Ã£ tá»“n táº¡i",
+      });
+    }
+  }
+
+  await brand.update(brandData);
+
+  res.status(200).json({
+    message: "Cáº­p nháº­t thÆ°Æ¡ng hiá»‡u thÃ nh cÃ´ng",
+    data: brand,
+  });
+}
+
 export async function deleteBrands(req, res) {
+  const { id } = req.params;
+  const brand = await db.Brand.findByPk(id);
+
+  if (!brand) {
+    return res.status(404).json({
+      message: "Khong tim thay thuong hieu",
+    });
+  }
+
+  await brand.destroy();
+
   res.status(200).json({
     message: "Xóa thương hiệu thành công",
   });

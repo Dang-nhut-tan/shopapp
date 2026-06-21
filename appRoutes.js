@@ -5,11 +5,15 @@ import * as OrderController from "./controllers/OrderController.js";
 import * as CategoryController from "./controllers/CategoryController.js";
 import * as OrderDetailController from "./controllers/OrderDetailController.js";
 import * as BrandController from "./controllers/BrandController.js";
-import InsertPorductReq from "./dtos/request/insertPorductReq.js";
-import InsertOrderReq from "./dtos/request/insertOrderReq.js";
-import InsertCategoryReq from "./dtos/request/insertCategoryReq.js";
-import InsertOrderDetailReq from "./dtos/request/insertOrderDetailReq.js";
-import InsertBrandReq from "./dtos/request/insertBrandReq.js";
+import InsertPorductReq from "./dtos/request/product/insertPorductReq.js";
+import InsertOrderReq from "./dtos/request/order/insertOrderReq.js";
+import InsertCategoryReq from "./dtos/request/category/insertCategoryReq.js";
+import InsertOrderDetailReq from "./dtos/request/orderDetail/insertOrderDetailReq.js";
+import InsertBrandReq from "./dtos/request/brand/insertBrandReq.js";
+import UpdateProductReq from "./dtos/request/product/updateProductReq.js";
+import UpdateOrderReq from "./dtos/request/order/updateOrderReq.js";
+import UpdateCategoryReq from "./dtos/request/category/updateCategoryReq.js";
+import UpdateBrandReq from "./dtos/request/brand/updateBrandReq.js";
 
 import asyncHandler from "./middelwares/asyncHandler.js";
 import validate from "./middelwares/validate.js";
@@ -24,7 +28,7 @@ export function AppRoute(app) {
   );
   router.put(
     "/products/:id",
-    validate(InsertPorductReq),
+    validate(UpdateProductReq),
     asyncHandler(ProductController.updateProducts),
   );
   router.delete("/products/:id", asyncHandler(ProductController.deleteProducts));
@@ -38,7 +42,7 @@ export function AppRoute(app) {
   );
   router.put(
     "/orders/:id",
-    validate(InsertOrderReq),
+    validate(UpdateOrderReq),
     asyncHandler(OrderController.updateOrders),
   );
   router.delete("/orders/:id", asyncHandler(OrderController.deleteOrders));
@@ -50,7 +54,15 @@ export function AppRoute(app) {
     validate(InsertCategoryReq),
     asyncHandler(CategoryController.insertCategories),
   );
-  router.delete("/categories/:id", CategoryController.deleteCategories);
+  router.put(
+    "/categories/:id",
+    validate(UpdateCategoryReq),
+    asyncHandler(CategoryController.updateCategories),
+  );
+  router.delete(
+    "/categories/:id",
+    asyncHandler(CategoryController.deleteCategories),
+  );
 
   router.get("/order-details", OrderDetailController.getOrderDetails);
   router.get("/order-details/:id", OrderDetailController.getOrderDetailsBYID);
@@ -59,7 +71,10 @@ export function AppRoute(app) {
     validate(InsertOrderDetailReq),
     asyncHandler(OrderDetailController.insertOrderDetails),
   );
-  router.delete("/order-details/:id", OrderDetailController.deleteOrderDetails);
+  router.delete(
+    "/order-details/:id",
+    asyncHandler(OrderDetailController.deleteOrderDetails),
+  );
 
   router.get("/brands", BrandController.getBrands);
   router.get("/brands/:id", BrandController.getBrandsBYID);
@@ -68,7 +83,12 @@ export function AppRoute(app) {
     validate(InsertBrandReq),
     asyncHandler(BrandController.insertBrands),
   );
-  router.delete("/brands/:id", BrandController.deleteBrands);
+  router.put(
+    "/brands/:id",
+    validate(UpdateBrandReq),
+    asyncHandler(BrandController.updateBrands),
+  );
+  router.delete("/brands/:id", asyncHandler(BrandController.deleteBrands));
 
   app.use("/api", router);
 }

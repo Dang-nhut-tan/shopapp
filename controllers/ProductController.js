@@ -1,8 +1,9 @@
 import db from "../models/index.js";
-const { Op } = db.Sequelize;
+const { Op } = db.Sequelize;// Toán tử Sequelize dùng cho điều kiện truy vấn (LIKE, OR, IN, ...)
 import productPagination from "../utils/productPagination.js";
 
-import InsertPorductReq from "../dtos/request/insertPorductReq.js";
+import InsertPorductReq from "../dtos/request/product/insertPorductReq.js";
+import UpdateProductReq from "../dtos/request/product/updateProductReq.js";
 
 const { getProductPagination, getTotalPage } = productPagination;
 
@@ -61,7 +62,7 @@ export async function getProducts(req, res) {
 }
 
 export async function getProductsBYID(req, res) {
-  const { id } = req.params;
+  const { id } = req.params;//req.params là nơi chứa các tham số trên URL (Route Parameters) trong ExpressJS.
   const product = await db.Product.findByPk(id);
 
   if (!product) {
@@ -115,7 +116,8 @@ export async function updateProducts(req, res) {
     });
   }
 
-  const productData = new InsertPorductReq(req.body);
+  const productData = new UpdateProductReq(req.body);
+  if (productData.name) {
   const existingProduct = await db.Product.findOne({
     where: {
       name: productData.name,
@@ -129,6 +131,8 @@ export async function updateProducts(req, res) {
     return res.status(409).json({
       message: "Tên sản phẩm đã tồn tại",
     });
+  }
+
   }
 
   await product.update(productData);

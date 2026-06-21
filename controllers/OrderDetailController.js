@@ -1,5 +1,5 @@
 import db from "../models/index.js"
-import InsertOrderDetailReq from "../dtos/request/insertOrderDetailReq.js"
+import InsertOrderDetailReq from "../dtos/request/orderDetail/insertOrderDetailReq.js"
 
 export async function getOrderDetails(req,res)
 {
@@ -37,6 +37,17 @@ export async function insertOrderDetails(req,res)
 
 export async function deleteOrderDetails(req,res)
 {
+    const { id } = req.params
+    const orderDetail = await db.OrderDetail.findByPk(id)
+
+    if (!orderDetail) {
+        return res.status(404).json({
+            message: "Khong tim thay chi tiet don hang"
+        })
+    }
+
+    await orderDetail.destroy()
+
     res.status(200).json(
     {
         message:'Xóa chi tiết đơn hàng thành công '

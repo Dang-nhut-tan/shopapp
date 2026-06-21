@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test';
 
 const db = require('../models/index.js');
 
+// Tạo response giả để test controller mà không cần chạy Express thật.
 function createMockResponse() {
   return {
     statusCode: null,
@@ -17,10 +18,12 @@ function createMockResponse() {
   };
 }
 
+// Tạo lại toàn bộ bảng trong database test trước khi chạy test suite.
 async function setupTestDatabase() {
   await db.sequelize.sync({ force: true });
 }
 
+// Xóa dữ liệu sau mỗi test để test sau không bị ảnh hưởng bởi test trước.
 async function cleanupTestDatabase() {
   await db.sequelize.truncate({
     cascade: true,
@@ -28,10 +31,12 @@ async function cleanupTestDatabase() {
   });
 }
 
+// Đóng kết nối database khi Jest chạy xong.
 async function closeTestDatabase() {
   await db.sequelize.close();
 }
 
+// Gom các hook hay dùng để mỗi file test chỉ cần gọi useTestDatabase().
 function useTestDatabase() {
   beforeAll(async () => {
     await setupTestDatabase();
