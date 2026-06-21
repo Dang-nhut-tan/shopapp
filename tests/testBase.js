@@ -58,6 +58,7 @@ function loadUserDto(fileName, className) {
   const dtoPath = path.join(__dirname, '..', 'dtos', 'request', 'user', fileName);
   const source = fs.readFileSync(dtoPath, 'utf8');
 
+
   // DTO đang dùng ES module, còn Jest của project đang chạy CommonJS.
   const commonJsSource = source
     .replace('import Joi from "joi";', 'const Joi = require("joi");')
