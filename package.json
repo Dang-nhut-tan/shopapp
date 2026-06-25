@@ -7,14 +7,14 @@
     "start": "nodemon --inspect index.js",
     "test": "jest",
     "test:newman": "newman run tests/newman/shopapp-smoke.postman_collection.json",
-    "db:setup": "node scripts/create-database.js && sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "db:create": "sequelize-cli db:create",
+    "db:setup": "node scripts/create-database.js && sequelize-cli db:migrate --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders && sequelize-cli db:seed:all --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
+    "db:create": "sequelize-cli db:create --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
     "db:create:safe": "node scripts/create-database.js",
-    "db:migrate": "sequelize-cli db:migrate",
-    "db:seed": "sequelize-cli db:seed:all",
-    "db:seed:undo": "sequelize-cli db:seed:undo:all",
-    "db:undo": "sequelize-cli db:migrate:undo",
-    "db:drop": "npx sequelize-cli db:drop"
+    "db:migrate": "sequelize-cli db:migrate --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
+    "db:seed": "sequelize-cli db:seed:all --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
+    "db:seed:undo": "sequelize-cli db:seed:undo:all --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
+    "db:undo": "sequelize-cli db:migrate:undo --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders",
+    "db:drop": "npx sequelize-cli db:drop --config config/config.js --models-path models --migrations-path migrations --seeders-path seeders"
   },
   "dependencies": {
     "dotenv": "^16.4.7",

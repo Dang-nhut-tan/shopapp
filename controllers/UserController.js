@@ -4,6 +4,7 @@ import userPagination from "../utils/userPagination.js";
 
 import InsertUserReq from "../dtos/request/user/insertUserReq.js";
 import UpdateUserReq from "../dtos/request/user/updateUserReq.js";
+import ResponseUser from "../dtos/response/user/responseUser.js";
 
 const { getUserPagination, getTotalPage } = userPagination;
 
@@ -50,7 +51,7 @@ export async function getUsers(req, res) {
     message: "Lấy danh sách user thành công",
     currentPage,
     totalPage: getTotalPage(totalUsers, pageSize),
-    data: users,
+    data: users.map((user) => new ResponseUser(user)),
   });
 }
 
@@ -66,7 +67,7 @@ export async function getUsersBYID(req, res) {
 
   res.status(200).json({
     message: "Lấy user dựa trên id thành công",
-    data: user,
+    data: new ResponseUser(user),
   });
 }
 
@@ -88,7 +89,7 @@ export async function insertUsers(req, res) {
 
   res.status(201).json({
     message: "Thêm user thành công",
-    data: user,
+    data: new ResponseUser(user),
   });
 }
 
@@ -125,7 +126,7 @@ export async function updateUsers(req, res) {
 
   res.status(200).json({
     message: "Cập nhật user thành công",
-    data: user,
+    data: new ResponseUser(user),
   });
 }
 

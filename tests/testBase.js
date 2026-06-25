@@ -67,10 +67,22 @@ function loadUserDto(fileName, className) {
   return Function('require', commonJsSource)(require);
 }
 
+function loadResponseUserDto() {
+  const dtoPath = path.join(__dirname, '..', 'dtos', 'response', 'user', 'responseUser.js');
+  const source = fs.readFileSync(dtoPath, 'utf8');
+
+  const commonJsSource = source
+    .replace('import Joi from "joi";', 'const Joi = require("joi");')
+    .replace('export default ResponseUser;', 'return ResponseUser;');
+
+  return Function('require', commonJsSource)(require);
+}
+
 function loadUserController() {
   const controllerPath = path.join(__dirname, '..', 'controllers', 'UserController.js');
   const InsertUserReq = loadUserDto('insertUserReq.js', 'InsertUserReq');
   const UpdateUserReq = loadUserDto('updateUserReq.js', 'UpdateUserReq');
+  const ResponseUser = loadResponseUserDto();
   const source = fs.readFileSync(controllerPath, 'utf8');
 
   // Controller cũng dùng ES module, nên đổi import/export tối thiểu để test bằng Jest hiện tại.
@@ -79,6 +91,7 @@ function loadUserController() {
     .replace('import userPagination from "../utils/userPagination.js";', 'const userPagination = arguments[1];')
     .replace('import InsertUserReq from "../dtos/request/user/insertUserReq.js";', 'const InsertUserReq = arguments[2];')
     .replace('import UpdateUserReq from "../dtos/request/user/updateUserReq.js";', 'const UpdateUserReq = arguments[3];')
+    .replace('import ResponseUser from "../dtos/response/user/responseUser.js";', 'const ResponseUser = arguments[4];')
     .replace(/export async function (\w+)/g, 'async function $1');
 
   return Function(`${commonJsSource}\nreturn { getUsers, getUsersBYID, insertUsers, updateUsers, deleteUsers };`)(
@@ -86,6 +99,7 @@ function loadUserController() {
     userPagination,
     InsertUserReq,
     UpdateUserReq,
+    ResponseUser,
   );
 }
 
@@ -97,4 +111,5 @@ module.exports = {
   closeTestDatabase,
   useTestDatabase,
   loadUserController,
+  loadResponseUserDto,
 };

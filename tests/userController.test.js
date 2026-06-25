@@ -1,6 +1,7 @@
 const {
   db,
   createMockResponse,
+  loadResponseUserDto,
   loadUserController,
   useTestDatabase,
 } = require('./testBase.js');
@@ -45,6 +46,21 @@ async function seedManyUsers(total) {
 }
 
 describe('UserController', () => {
+  test('ResponseUser validate rejects password', () => {
+    const ResponseUser = loadResponseUserDto();
+    const validUser = {
+      id: 1,
+      email: 'valid-user@example.com',
+      name: 'Valid User',
+      role: 0,
+      avatar: '',
+      phone: '0900000000',
+    };
+
+    expect(ResponseUser.validate(validUser).error).toBeUndefined();
+    expect(ResponseUser.validate({ ...validUser, password: '123456' }).error).toBeDefined();
+  });
+
   test('getUsers trả về danh sách user có phân trang', async () => {
     await seedManyUsers(6);
 
@@ -57,6 +73,7 @@ describe('UserController', () => {
     expect(res.body.currentPage).toBe(2);
     expect(res.body.totalPage).toBe(2);
     expect(res.body.data).toHaveLength(1);
+    expect(res.body.data[0]).not.toHaveProperty('password');
   });
 
   test('getUsers hỗ trợ tìm kiếm theo email', async () => {
@@ -83,6 +100,7 @@ describe('UserController', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.data.id).toBe(user.id);
+    expect(res.body.data).not.toHaveProperty('password');
   });
 
   test('getUsersBYID trả về 404 khi không tìm thấy user', async () => {
@@ -111,6 +129,7 @@ describe('UserController', () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.data.email).toBe('new-user@shopapp.local');
+    expect(res.body.data).not.toHaveProperty('password');
   });
 
   test('updateUsers cập nhật user', async () => {
